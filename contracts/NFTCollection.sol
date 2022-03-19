@@ -8,19 +8,19 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract NFTCollection is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 
-    uint public constant MAX_SUPPLY = 10000;
+    uint public constant MAX_SUPPLY = 100;
     uint256 public constant MINT_PRICE = 1000000000000000; // 0.001 ETH
     string baseURI = "";
 
-    address payable public ownerAddress = payable(0xa95EA4CEf177f3aCc2d4545E6D2D8919887AA874);
-
-    // bool public hasSaleStarted = false;
-    // bool internal URISet = false;
+    // address payable public ownerAddress = payable(0xa95EA4CEf177f3aCc2d4545E6D2D8919887AA874);
+    address payable ownerAddress = payable(msg.sender);
+    bool public hasSaleStarted = false;
+    bool internal URISet = false;
     uint[MAX_SUPPLY] private indices;
 
 
 
-    constructor() ERC721("MyCollection", "ABC") {    }
+    constructor() ERC721("NFTCollection", "NFT") {    }
 
     // function to get a random id for minting (by DerpyBirbs)
     function randomIndex() internal returns (uint) {
@@ -64,8 +64,8 @@ contract NFTCollection is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 
     // mint
     function mintNFTs(uint256 numNFTs) external payable {
-        // require(hasSaleStarted == true, "Sale has not started yet");
-        require(numNFTs > 0 && numNFTs <= 50, "You can only buy 1 to 50 nfts at a time");
+        require(hasSaleStarted == true, "Sale has not started yet");
+        require(numNFTs > 0 && numNFTs <= 10, "You can only buy 1 to 10 nfts at a time");
         require(totalSupply() + numNFTs <= MAX_SUPPLY, "There aren't enough nfts left");
         uint256 totalPrice = MINT_PRICE * numNFTs;
         require(msg.value >= totalPrice, "Ether value sent is below the mint price");
@@ -89,7 +89,7 @@ contract NFTCollection is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
 
     // owner can mint for free
     function mintNFTsOwner(uint256 numNFTs) external {
-        // require(hasSaleStarted == true, "Sale has not started yet");
+        require(hasSaleStarted == true, "Sale has not started yet");
         require(numNFTs > 0 , "Mint at least 1 nft");
         require(totalSupply() + numNFTs <= MAX_SUPPLY, "There aren't enough nfts left");
 
@@ -101,23 +101,23 @@ contract NFTCollection is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     }
 
     // Start the sale
-    // function startSale() external onlyOwner {
-    //     // require(hasSaleStarted == false, "Sale has already started");
-    //     // require(URISet == true, "URI not set");
-    //     // hasSaleStarted = true;
-    // }
+    function startSale() external onlyOwner {
+        require(hasSaleStarted == false, "Sale has already started");
+        require(URISet == true, "URI not set");
+        hasSaleStarted = true;
+    }
 
 
 
     // Change metadata
     function _baseURI() internal view virtual override returns(string memory) {
-        // require(hasSaleStarted == false, "Can't change metadata after the sale has started");
 
-        // URISet = true;
         return baseURI;
     }
 
     function setBaseURI(string memory newURI) external onlyOwner {
+        require(hasSaleStarted == false, "Can't change metadata after the sale has started");
+        URISet = true;
         baseURI = newURI;
     }
 
