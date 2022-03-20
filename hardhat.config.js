@@ -12,34 +12,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   }
 });
 
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
-
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
-// module.exports = {
-//   solidity: "0.8.4",
-//   paths: {
-//     artifact: "./src/artifacts"
-//   },
-//   networks : {
-//     hardhat: {
-//       chainId : 1337
-//     },
-//     ropsten: {
-//       url:"https://ropsten.infura.io/v3/1d38967181ec4df5b411b2e3c5c9b3b1",
-//       accounts: ["e2e4a076311751dd8afdfbb333a1b1d6006b0453f4362d1e324719ead5362a83"]
-//     },
-//     mumbai: {
-//       url:"https://polygon-mumbai.g.alchemy.com/v2/qWSo_eEjCQ0EpIZyrCYrZHzJox4ihWMF",
-//       accounts: ["e2e4a076311751dd8afdfbb333a1b1d6006b0453f4362d1e324719ead5362a83"]
-//     }
-//   }
-// };
-
 module.exports = {
-  // defaultNetwork: "rinkeby",
+  defaultNetwork: "rinkeby",
   networks : {
         hardhat: {
           chainId : 1337

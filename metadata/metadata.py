@@ -18,5 +18,5 @@ for id in range(NUMBER_OF_TOKENS):
 
 
     # print(text)
-    with open(f'./metadata/jsonfiles/{str(id)}.json', 'w') as outfile:
+    with open(f'./metadata/jsonfiles/{str(id)}', 'w') as outfile:
         json.dump(token, outfile, indent=4)
